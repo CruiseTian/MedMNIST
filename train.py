@@ -97,6 +97,11 @@ def main(flag, input_root, output_root, end_epoch, download):
     optimizer = optim.SGD(model.parameters(), lr=lr, momentum=0.9)
 
     for epoch in trange(start_epoch, end_epoch):
+        if epoch>=1:
+            auclist = np.load('epoch%d.npy' % (epoch-1)).tolist()
+            model_path = os.path.join(
+            dir_path, 'ckpt_%d_auc_%.5f.pth' % (epoch-1, auclist[epoch-1]))
+            model.load_state_dict(torch.load(model_path)['net'])
         train(model, optimizer, criterion, train_loader, device, task)
         val(model, val_loader, device, val_auc_list, task, dir_path, epoch)
 
@@ -197,6 +202,9 @@ def val(model, val_loader, device, val_auc_list, task, dir_path, epoch):
 
     path = os.path.join(dir_path, 'ckpt_%d_auc_%.5f.pth' % (epoch, auc))
     torch.save(state, path)
+
+    auc_path = os.path.join(dir_path, 'epoch%d.npy' % (epoch))
+    np.save(auc_path,np.array(val_auc_list)) # 保存为.npy格式
 
 
 def test(model, split, data_loader, device, flag, task, output_root=None):
