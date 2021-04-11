@@ -98,7 +98,8 @@ def main(flag, input_root, output_root, start_epoch, end_epoch, download):
 
     for epoch in trange(start_epoch, end_epoch):
         if epoch>=1:
-            auclist = np.load('epoch%d.npy' % (epoch-1)).tolist()
+            auc_path = os.path.join(dir_path, 'epoch%d.npy' % (epoch-1))
+            auclist = np.load(auc_path).tolist()
             model_path = os.path.join(
             dir_path, 'ckpt_%d_auc_%.5f.pth' % (epoch-1, auclist[epoch-1]))
             model.load_state_dict(torch.load(model_path)['net'])
