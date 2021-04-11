@@ -15,7 +15,7 @@ from medmnist.evaluator import getAUC, getACC, save_results
 from medmnist.info import INFO
 
 
-def main(flag, input_root, output_root, end_epoch, download):
+def main(flag, input_root, output_root, start_epoch, end_epoch, download):
     ''' main function
     :param flag: name of subset
 
@@ -40,7 +40,7 @@ def main(flag, input_root, output_root, end_epoch, download):
     n_channels = info['n_channels']
     n_classes = len(info['label'])
 
-    start_epoch = 0
+    # start_epoch = 0
     lr = 0.001
     batch_size = 128
     val_auc_list = []
@@ -268,9 +268,17 @@ if __name__ == '__main__':
                         default='./output',
                         help='output root, where to save models and results',
                         type=str)
-    parser.add_argument('--num_epoch',
+    # parser.add_argument('--num_epoch',
+    #                     default=100,
+    #                     help='num of epochs of training',
+    #                     type=int)
+    parser.add_argument('--start_epoch',
+                        default=0,
+                        help='num of epochs of starting train',
+                        type=int)
+    parser.add_argument('--end_epoch',
                         default=100,
-                        help='num of epochs of training',
+                        help='num of epochs of ending train',
                         type=int)
     parser.add_argument('--download',
                         default=True,
@@ -281,10 +289,13 @@ if __name__ == '__main__':
     data_name = args.data_name.lower()
     input_root = args.input_root
     output_root = args.output_root
-    end_epoch = args.num_epoch
+    # end_epoch = args.num_epoch
+    start_epoch = args.start_epoch
+    end_epoch = args.end_epoch
     download = args.download
     main(data_name,
          input_root,
          output_root,
+         start_epoch=start_epoch,
          end_epoch=end_epoch,
          download=download)
