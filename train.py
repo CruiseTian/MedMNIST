@@ -101,14 +101,14 @@ def main(flag, input_root, output_root, start_epoch, end_epoch, download, BS=128
     for epoch in trange(start_epoch, end_epoch):
         if epoch>=1:
             save_data = np.loadtxt(os.path.join(dir_path, 'save_data.txt'))
-            val_auc_list = save_data[:, 0]
+            val_auc_list = save_data[:, 1]
             model_path = os.path.join(dir_path, 'ckpt_%d_auc_%.5f.pth' % (epoch-1, val_auc_list[epoch-1]))
             model.load_state_dict(torch.load(model_path)['net'])
         train(model, optimizer, criterion, train_loader, device, task)
         val(model, val_loader, device, task, dir_path, epoch)
 
     save_data = np.loadtxt(os.path.join(dir_path, 'save_data.txt'))
-    auc_list = save_data[:, 0]
+    auc_list = save_data[:, 1]
     index = auc_list.argmax()
     print('epoch %s is the best model' % (index))
 
