@@ -101,6 +101,7 @@ def main(flag, input_root, output_root, start_epoch, end_epoch, download, BS=128
     for epoch in trange(start_epoch, end_epoch):
         if epoch>=1:
             save_data = np.loadtxt(os.path.join(dir_path, 'save_data.txt'))
+            save_data = np.reshape(save_data,(-1,3))
             val_auc_list = save_data[:, 1]
             model_path = os.path.join(dir_path, 'ckpt_%d_auc_%.5f.pth' % (epoch-1, val_auc_list[epoch-1]))
             model.load_state_dict(torch.load(model_path)['net'])
@@ -207,7 +208,7 @@ def val(model, val_loader, device, task, dir_path, epoch):
     torch.save(state, path)
 
     data_file = open(os.path.join(dir_path, 'save_data.txt'), 'a')
-    data_file.write(str(epoch) + ' ' + str(auc) + " " + str(acc) + "\n")
+    data_file.write(str(epoch) + ' ' + str(auc) + ' ' + str(acc) + "\n")
     data_file.close()
 
 
