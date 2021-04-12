@@ -99,8 +99,8 @@ def main(flag, input_root, output_root, start_epoch, end_epoch, download, BS=128
     optimizer = optim.SGD(model.parameters(), lr=lr, momentum=0.9)
 
     for epoch in trange(start_epoch, end_epoch):
-        save_data = np.loadtxt(os.path.join(dir_path, 'save_data.txt'))
         if epoch>=1:
+            save_data = np.loadtxt(os.path.join(dir_path, 'save_data.txt'))
             val_auc_list = save_data[:, 0]
             model_path = os.path.join(dir_path, 'ckpt_%d_auc_%.5f.pth' % (epoch-1, val_auc_list[epoch-1]))
             model.load_state_dict(torch.load(model_path)['net'])
