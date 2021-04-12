@@ -47,8 +47,10 @@ def main(flag, input_root, output_root, start_epoch, end_epoch, download, BS=128
     dir_path = os.path.join(output_root, '%s_checkpoints' % (flag))
     if not os.path.exists(dir_path):
         os.makedirs(dir_path)
-    data_file = open(os.path.join(dir_path, 'save_data.txt'), 'w')
-    data_file.close()
+
+    filename = os.path.join(dir_path, 'save_data.txt')
+    if not os.path.isfile(filename):
+        os.system(r"touch {}".format(filename))#调用系统命令行来创建文件
 
     print('==> Preparing data...')
     train_transform = transforms.Compose(
