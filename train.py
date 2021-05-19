@@ -115,9 +115,6 @@ def main(args):
     else:
         optimizer = optim.Adam(model.parameters(), lr=lr)
 
-    # filelen = subprocess.getoutput("wc -l %s" % data_path)
-    # if filelen>args.start_epoch:
-    #     os.system(r"head -{} {} > tmp.txt && mv -f tmp.txt {} && rm -f tmp.txt".format(args.start_epoch, data_path, data_path))
     for epoch in trange(args.start_epoch, args.end_epoch):
         if epoch>=1:
             save_data = np.loadtxt(data_path)
