@@ -1,4 +1,4 @@
-import os
+import os, time
 import argparse
 from tqdm import trange
 import numpy as np
@@ -8,7 +8,6 @@ import torch.optim as optim
 import torch.utils.data as data
 import torchvision.transforms as transforms
 import matplotlib.pyplot as plt
-import subprocess
 
 from medmnist.models import ResNet18, ResNet50
 from medmnist.dataset import PathMNIST, ChestMNIST, DermaMNIST, OCTMNIST, PneumoniaMNIST, RetinaMNIST, \
@@ -45,8 +44,9 @@ def main(args):
     # start_epoch = 0
     lr = args.lr
     batch_size = args.bs
+    timestamp = time.strftime('%Y%m%d_%H%M%S', time.localtime())
     # val_auc_list = []
-    dir_path = os.path.join(args.output_root, '%s_checkpoints' % (args.data_name))
+    dir_path = os.path.join(args.output_root, '%s_checkpoints_%s' % (args.data_name, timestamp))
     if not os.path.exists(dir_path):
         os.makedirs(dir_path)
 
