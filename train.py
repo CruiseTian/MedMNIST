@@ -46,7 +46,7 @@ def main(args):
     batch_size = args.bs
     timestamp = time.strftime('%Y%m%d_%H%M%S', time.localtime())
     # val_auc_list = []
-    dir_path = os.path.join(args.output_root, '%s_checkpoints_%s' % (args.data_name, timestamp))
+    dir_path = os.path.join(args.output_root, '%s_%s' % (args.data_name, timestamp))
     if not os.path.exists(dir_path):
         os.makedirs(dir_path)
 
@@ -134,9 +134,9 @@ def main(args):
     restore_model_path = os.path.join(
         dir_path, 'ckpt_%d_auc_%.5f.pth' % (index, auc_list[index]))
     model.load_state_dict(torch.load(restore_model_path)['net'])
-    test(model, 'train', train_loader, device, task, args)
-    test(model, 'val', val_loader, device, task, args)
-    test(model, 'test', test_loader, device, task, args)
+    test(model, 'train', train_loader, device, task, dir_path)
+    test(model, 'val', val_loader, device, task, dir_path)
+    test(model, 'test', test_loader, device, task, dir_path)
 
 # 查看数据（可视化数据）
 def datashow(train_loader):
@@ -229,7 +229,7 @@ def val(model, val_loader, device, task, dir_path, epoch):
     data_file.close()
 
 
-def test(model, split, data_loader, device, task, args):
+def test(model, split, data_loader, device, task, dir_path):
     ''' testing function
     :param model: the model to test
     :param split: the data to test, 'train/val/test'
@@ -266,12 +266,13 @@ def test(model, split, data_loader, device, task, args):
         acc = getACC(y_true, y_score, task)
         print('%s AUC: %.5f ACC: %.5f' % (split, auc, acc))
 
-        if args.output_root is not None:
-            output_dir = os.path.join(args.output_root, args.data_name)
-            if not os.path.exists(output_dir):
-                os.mkdir(output_dir)
-            output_path = os.path.join(output_dir, '%s.csv' % (split))
-            save_results(y_true, y_score, output_path)
+        # if args.output_root is not None:
+        #     output_dir = os.path.join(args.output_root, args.data_name)
+        #     if not os.path.exists(output_dir):
+        #         os.mkdir(output_dir)
+            # output_path = os.path.join(output_dir, '%s.csv' % (split))
+        output_path = os.path.join(dir_path, '%s.csv' % (split))
+        save_results(y_true, y_score, output_path)
 
 
 if __name__ == '__main__':
