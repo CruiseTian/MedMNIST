@@ -41,7 +41,7 @@ def main(args):
     n_channels = info['n_channels']
     n_classes = len(info['label'])
 
-    # start_epoch = 0
+    start_epoch = 0
     lr = args.lr
     batch_size = args.bs
     timestamp = time.strftime('%Y%m%d_%H%M%S', time.localtime())
@@ -105,6 +105,10 @@ def main(args):
     if args.net==50:
         model = ResNet50(in_channels=n_channels, num_classes=n_classes).to(device)
 
+    if args.weight is not None:
+        model.load_state_dict(torch.load(args.weight)['net'])
+        start_epoch = torch.load(args.weight)['epoch']
+
     if task == "multi-label, binary-class":
         criterion = nn.BCEWithLogitsLoss()
     else:
@@ -115,15 +119,9 @@ def main(args):
     else:
         optimizer = optim.Adam(model.parameters(), lr=lr)
 
-    for epoch in trange(args.start_epoch, args.end_epoch):
-        if epoch>=1:
-            save_data = np.loadtxt(data_path)
-            save_data = np.reshape(save_data,(-1,3))
-            val_auc_list = save_data[:, 1]
-            model_path = os.path.join(dir_path, 'ckpt_%d_auc_%.5f.pth' % (epoch-1, val_auc_list[epoch-1]))
-            model.load_state_dict(torch.load(model_path)['net'])
-        train(model, optimizer, criterion, train_loader, device, task)
-        val(model, val_loader, device, task, dir_path, epoch)
+    for epoch in trange(start_epoch, args.end_epoch):
+        train(model, optimizer, criterion, train_loader, device, task, dir_path)
+        val(model, val_loader, device, task, dir_path, epoch, criterion)
 
     save_data = np.loadtxt(data_path)
     auc_list = save_data[:, 1]
@@ -151,7 +149,7 @@ def datashow(train_loader):
     plt.tight_layout()
     plt.show()
 
-def train(model, optimizer, criterion, train_loader, device, task):
+def train(model, optimizer, criterion, train_loader, device, task, dir_path):
     ''' training function
     :param model: the model to train
     :param optimizer: optimizer used in training
@@ -163,6 +161,7 @@ def train(model, optimizer, criterion, train_loader, device, task):
     '''
 
     model.train()
+    train_loss = []
     for batch_idx, (inputs, targets) in enumerate(train_loader):
         optimizer.zero_grad()
         outputs = model(inputs.to(device))
@@ -176,9 +175,14 @@ def train(model, optimizer, criterion, train_loader, device, task):
 
         loss.backward()
         optimizer.step()
+        train_loss.append(loss.item())
+
+    trainloss = open(os.path.join(dir_path, 'train_loss.txt'), 'a')
+    trainloss.write(str(np.mean(train_loss)) + "\n")
+    trainloss.close()
 
 
-def val(model, val_loader, device, task, dir_path, epoch):
+def val(model, val_loader, device, task, dir_path, epoch, criterion):
     ''' validation function
     :param model: the model to validate
     :param val_loader: DataLoader of validation set
@@ -191,6 +195,7 @@ def val(model, val_loader, device, task, dir_path, epoch):
     '''
 
     model.eval()
+    val_loss = []
     y_true = torch.tensor([]).to(device)
     y_score = torch.tensor([]).to(device)
     with torch.no_grad():
@@ -199,16 +204,19 @@ def val(model, val_loader, device, task, dir_path, epoch):
 
             if task == 'multi-label, binary-class':
                 targets = targets.to(torch.float32).to(device)
+                loss = criterion(outputs, targets)
                 m = nn.Sigmoid()
                 outputs = m(outputs).to(device)
             else:
                 targets = targets.squeeze().long().to(device)
+                loss = criterion(outputs, targets)
                 m = nn.Softmax(dim=1)
                 outputs = m(outputs).to(device)
                 targets = targets.float().resize_(len(targets), 1)
 
             y_true = torch.cat((y_true, targets), 0)
             y_score = torch.cat((y_score, outputs), 0)
+            val_loss.append(loss.item())
 
         y_true = y_true.cpu().numpy()
         y_score = y_score.detach().cpu().numpy()
@@ -223,6 +231,10 @@ def val(model, val_loader, device, task, dir_path, epoch):
 
     path = os.path.join(dir_path, 'ckpt_%d_auc_%.5f.pth' % (epoch, auc))
     torch.save(state, path)
+
+    valloss = open(os.path.join(dir_path, 'val_loss.txt'), 'a')
+    valloss.write(str(np.mean(val_loss)) + "\n")
+    valloss.close()
 
     data_file = open(os.path.join(dir_path, 'save_data.txt'), 'a')
     data_file.write(str(epoch) + ' ' + str(auc) + ' ' + str(acc) + "\n")
@@ -290,14 +302,6 @@ if __name__ == '__main__':
                         default='./output',
                         help='output root, where to save models and results',
                         type=str)
-    # parser.add_argument('--num_epoch',
-    #                     default=100,
-    #                     help='num of epochs of training',
-    #                     type=int)
-    parser.add_argument('--start_epoch',
-                        default=0,
-                        help='num of epochs of starting train',
-                        type=int)
     parser.add_argument('--end_epoch',
                         default=100,
                         help='num of epochs of ending train',
@@ -326,6 +330,10 @@ if __name__ == '__main__':
                         default=False,
                         help='Show part of the dataset',
                         type=bool)
+    parser.add_argument('--weight',
+                        default=None,
+                        help='the init model',
+                        type=str)
 
     args = parser.parse_args()
     main(args)
