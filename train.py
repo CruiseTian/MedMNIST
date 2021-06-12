@@ -46,7 +46,7 @@ def main(args):
     batch_size = args.bs
     timestamp = time.strftime('%Y%m%d_%H%M%S', time.localtime())
     # val_auc_list = []
-    dir_path = os.path.join(args.output_root, '%s_%s' % (args.data_name, timestamp))
+    dir_path = os.path.join(args.output_root, '%s_%d_%s' % (args.data_name, args.net, timestamp))
     if not os.path.exists(dir_path):
         os.makedirs(dir_path)
 
@@ -157,6 +157,7 @@ def train(model, optimizer, criterion, train_loader, device, task, dir_path):
     :param train_loader: DataLoader of training set
     :param device: cpu or cuda
     :param task: task of current dataset, binary-class/multi-class/multi-label, binary-class
+    :param dir_path: where to save loss
 
     '''
 
@@ -189,8 +190,9 @@ def val(model, val_loader, device, task, dir_path, epoch, criterion):
     :param device: cpu or cuda
     :param val_auc_list: the list to save AUC score of each epoch
     :param task: task of current dataset, binary-class/multi-class/multi-label, binary-class
-    :param dir_path: where to save model
+    :param dir_path: where to save model and data
     :param epoch: current epoch
+    :param criterion: loss function
 
     '''
 
@@ -248,6 +250,7 @@ def test(model, split, data_loader, device, task, dir_path):
     :param data_loader: DataLoader of data
     :param device: cpu or cuda
     :param task: task of current dataset, binary-class/multi-class/multi-label, binary-class
+    :param dir_path: where to save data
 
     '''
 
