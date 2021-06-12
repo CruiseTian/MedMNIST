@@ -24,8 +24,6 @@ def plot(dataset_name):
     s = ['ResNet18 AUC', 'ResNet50 AUC', 'ResNet18 Accuracy', 'ResNet50 Accuracy']
     title = [dataset_name+' AUC', dataset_name+' Accuracy']
 
-    # filename18 = "./data/resnet18_" + dataset_name + ".txt"
-    # filename50 = "./data/resnet50_" + dataset_name + ".txt"
     filename18 = "./data/" + dataset_name + "18.txt"
     filename50 = "./data/" + dataset_name + "50.txt"
     data18 = np.loadtxt(filename18,usecols=[1, 2], ndmin=2).T
@@ -48,8 +46,6 @@ def plot_loss(dataset_name):
     s = ['ResNet18 train loss', 'ResNet18 val loss', 'ResNet50 train loss', 'ResNet50 val loss']
     title = [dataset_name+' 18', dataset_name+' 50']
 
-    # filename18 = "./data/resnet18_" + dataset_name + ".txt"
-    # filename50 = "./data/resnet50_" + dataset_name + ".txt"
     train18name = "./data/" + dataset_name + "18_train_loss.txt"
     train50name = "./data/" + dataset_name + "50_train_loss.txt"
     val18name = "./data/" + dataset_name + "18_val_loss.txt"
