@@ -16,6 +16,3 @@
 * [`train.py`](train.py): The training and evaluation script to reproduce the baseline results in the paper.
 * [`plot.py`](plot.py): The script to plot the needed curve.
 * [`result.txt`](result.txt): The result file of our train.
-
-
-For more information, please check the origin [README](origin_README.md)
