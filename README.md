@@ -2,6 +2,7 @@
 * [`medmnist/`](medmnist/):
     * [`dataset.py`](medmnist/dataset.py): PyTorch datasets and dataloaders of MedMNIST.
     * [`models.py`](medmnist/models.py): *ResNet-18* and *ResNet-50* models.
+    * [`breast_models.py`](medmnist/breast_models.py): Better *ResNet-18* and *ResNet-50* models for BreastMNIST.
     * [`evaluator.py`](medmnist/evaluator.py): Standardized evaluation functions.
     * [`info.py`](medmnist/info.py): Dataset information `dict` for each subset of MedMNIST.
 * [`data/`](data/):

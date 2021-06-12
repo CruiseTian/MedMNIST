@@ -1,0 +1,81 @@
+retina 18:
+train AUC: 0.80339 ACC: 0.55000
+val AUC: 0.80412 ACC: 0.53333
+test AUC: 0.73232 ACC: 0.55250
+
+retina 50:
+train AUC: 0.79354 ACC: 0.53333
+val AUC: 0.79370 ACC: 0.60000
+test AUC: 0.73908 ACC: 0.53250
+
+breast 18:
+train AUC: 1.00000 ACC: 1.00000
+val AUC: 0.97995 ACC: 0.89744
+test AUC: 0.90904 ACC: 0.87821
+
+breast 50:
+train AUC: 1.00000 ACC: 1.00000
+val AUC: 0.94236 ACC: 0.85897
+test AUC: 0.90351 ACC: 0.87179
+
+chest 18:
+train AUC: 0.85134 ACC: 0.95087
+val AUC: 0.77247 ACC: 0.94856
+test AUC: 0.76868 ACC: 0.94672
+
+chest 50:
+train AUC: 0.80401 ACC: 0.94933
+val AUC: 0.77305 ACC: 0.94942
+test AUC: 0.77171 ACC: 0.94779
+
+path 18:
+train AUC: 1.00000 ACC: 0.99973
+val AUC: 0.99976 ACC: 0.98591
+test AUC: 0.98051 ACC: 0.88663
+
+path 50:
+train AUC: 1.00000 ACC: 0.99947
+val AUC: 0.99974 ACC: 0.98481
+test AUC: 0.98568 ACC: 0.89526
+
+
+#################### resize result #######################
+breast 28:
+train AUC: 1.00000 ACC: 0.99451
+val AUC: 0.95489 ACC: 0.88462
+test AUC: 0.90852 ACC: 0.83333
+
+breast 32:
+train AUC: 1.00000 ACC: 1.00000
+val AUC: 0.97995 ACC: 0.89744
+test AUC: 0.90904 ACC: 0.87821
+
+breast 48:
+train AUC: 0.99913 ACC: 0.98718
+val AUC: 0.93525 ACC: 0.88462
+test AUC: 0.90142 ACC: 0.86538
+
+breast 56:
+train AUC: 0.99216 ACC: 0.89377
+val AUC: 0.97327 ACC: 0.84615
+test AUC: 0.90226 ACC: 0.81410
+
+retina 28:
+train AUC: 0.79652 ACC: 0.53889
+val AUC: 0.82765 ACC: 0.55833
+test AUC: 0.73590 ACC: 0.53250
+
+retina 32:
+train AUC: 0.80339 ACC: 0.55000
+val AUC: 0.80412 ACC: 0.53333
+test AUC: 0.73232 ACC: 0.55250
+
+retina 48:
+train AUC: 0.79147 ACC: 0.54167
+val AUC: 0.82725 ACC: 0.59167
+test AUC: 0.75295 ACC: 0.54000
+
+retina 56:
+train AUC: 0.80754 ACC: 0.55741
+val AUC: 0.83776 ACC: 0.60000
+test AUC: 0.73540 ACC: 0.52500

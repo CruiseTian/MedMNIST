@@ -46,7 +46,7 @@ def main(args):
     batch_size = args.bs
     timestamp = time.strftime('%Y%m%d_%H%M%S', time.localtime())
     # val_auc_list = []
-    dir_path = os.path.join(args.output_root, '%s_%d_%s' % (args.data_name, args.net, timestamp))
+    dir_path = os.path.join(args.output_root, '%s_%d_%d_%s' % (args.data_name, args.net, args.size, timestamp))
     if not os.path.exists(dir_path):
         os.makedirs(dir_path)
 
@@ -56,17 +56,17 @@ def main(args):
 
     print('==> Preparing data...')
     train_transform = transforms.Compose(
-        [transforms.Resize([32,32]),
+        [transforms.Resize([args.size,args.size]),
          transforms.ToTensor(),
          transforms.Normalize(mean=[.5], std=[.5])])
 
     val_transform = transforms.Compose(
-        [transforms.Resize([32,32]),
+        [transforms.Resize([args.size,args.size]),
          transforms.ToTensor(),
          transforms.Normalize(mean=[.5], std=[.5])])
 
     test_transform = transforms.Compose(
-        [transforms.Resize([32,32]),
+        [transforms.Resize([args.size,args.size]),
          transforms.ToTensor(),
          transforms.Normalize(mean=[.5], std=[.5])])
 
@@ -337,6 +337,10 @@ if __name__ == '__main__':
                         default=None,
                         help='the init model',
                         type=str)
+    parser.add_argument('--size',
+                        default=32,
+                        help='the size of the data',
+                        type=int)
 
     args = parser.parse_args()
     main(args)

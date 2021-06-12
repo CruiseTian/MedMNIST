@@ -71,11 +71,40 @@ def plot_loss(dataset_name):
     plt.savefig(dataset_name+'_loss.png', format='png', dpi=400)
     plt.show()
 
-plot("breast")
-plot_loss('breast')
-plot('chest')
-plot_loss('chest')
-plot('retina')
-plot_loss('retina')
-plot('path')
-plot_loss('path')
+
+def plot_resize():
+    x = [28, 32, 48, 56]
+    breast_acc = [0.83333, 0.87821, 0.86538, 0.81410] # breast resize test acc
+    breast_auc = [0.90852, 0.90904, 0.90142, 0.90226] # breast resize test auc
+    retina_auc = [0.73590, 0.73232, 0.75295, 0.73540] # retina resize test auc
+    retina_acc = [0.53250, 0.55250, 0.54000, 0.52500] # retina resize test acc
+
+    fig, ax = plt.subplots(1, 2, figsize=(12, 6), tight_layout=True)
+    s = ['test accuracy', 'test auc']
+    title = ['BreastMNIST', 'RetinaMNIST']
+
+    ax[0].plot(x, breast_acc, '-', c='#e41b1b', label=s[0], linewidth=1.5, markersize=6)
+    ax[0].plot(x, breast_auc, '-', c='#377eb8', label=s[1], linewidth=1.5, markersize=6)
+    ax[0].set_title(title[0],fontweight='bold',fontsize=16)
+    ax[0].legend(loc='best',fancybox=True, framealpha=0,fontsize=14)
+    ax[0].grid(True, linestyle='dotted')  # x坐标轴的网格使用主刻度
+
+    ax[1].plot(x, retina_acc, '-', c='#e41b1b', label=s[0], linewidth=1.5, markersize=6)
+    ax[1].plot(x, retina_auc, '-', c='#377eb8', label=s[1], linewidth=1.5, markersize=6)
+    ax[1].set_title(title[1],fontweight='bold',fontsize=16)
+    ax[1].legend(loc='best',fancybox=True, framealpha=0,fontsize=14)
+    ax[1].grid(True, linestyle='dotted')  # x坐标轴的网格使用主刻度
+
+    plt.savefig('./fig/resize.png', format='png', dpi=400)
+    plt.show()
+
+# plot("breast")
+# plot_loss('breast')
+# plot('chest')
+# plot_loss('chest')
+# plot('retina')
+# plot_loss('retina')
+# plot('path')
+# plot_loss('path')
+
+plot_resize()
