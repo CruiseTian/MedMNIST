@@ -14,8 +14,6 @@
     * [`{dataname}.png`](fig/breast.png): The train curve of AUC and ACC for different datasets and different Network.
     * [`{dataname}_loss.png`](fig/breast_loss.png): The loss curve for different datasets and different Network.
 * [`train.py`](train.py): The training and evaluation script to reproduce the baseline results in the paper.
-* [`getting_started.ipynb`](getting_started.ipynb): Explore the MedMNIST dataset with jupyter notebook. It is **ONLY** intended for a quick exploration, i.e., it does not provide full training and evaluation functionalities (please refer to [`train.py`](train.py) instead). 
-* [`setup.py`](setup.py): The script to install medmnist as a module.
 * [`plot.py`](plot.py): The script to plot the needed curve.
 * [`result.txt`](result.txt): The result file of our train.
 
